@@ -3,11 +3,14 @@ Refactored Baidu Map implementation with search box autocomplete. Map is in a Bo
 
 ## A few things to note
 
-1. The implementation was in Ruby on Rails. Feel free to extract what you need (esp. the Javascript portion).
+1. The implementation is in Ruby on Rails. Feel free to extract what you need (esp. the Javascript portion).
 
 2. Baidu map does not seem to have HTTPS version. So you will get **blocked mixed content** error. The solution is:
 
-- Add the following to Gemfile: gem 'rack-ssl-enforcer'
+- Add the following to Gemfile: 
+```
+gem 'rack-ssl-enforcer'
+```
 - Run "bundle install"
 - Add the following to config/application.rb:
 ```
@@ -15,9 +18,11 @@ Refactored Baidu Map implementation with search box autocomplete. Map is in a Bo
         config.middleware.use Rack::SslEnforcer, except: [ /edit_venues/ ], strict: true 
     end
 ```
+- Replace edit_venues with your own url where you want to display the map
+
 ###The flow is:
 
-- User moves navigates away from address text field
+- User navigates away from address text field
 - The modal pops up
 - User enters a location to be searched
 - User can click/drag marker
