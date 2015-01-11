@@ -15,8 +15,7 @@ Refactored Baidu Map implementation with search box autocomplete. Map is in a Bo
         config.middleware.use Rack::SslEnforcer, except: [ /edit_venues/ ], strict: true 
     end
 ```
-
-3. The flow is:
+###The flow is:
 
 - User moves navigates away from address text field
 - The modal pops up
