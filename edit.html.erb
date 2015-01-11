@@ -1,0 +1,62 @@
+<div class="container dashboard-main" data-no-turbolink="true">
+  <div class="row">      
+    <section class="panel venue-section">
+      <h1 class="intro full-width ta-center"><%= t("views.venues.title") %></h1>
+      <div id="add-venue-section" class="add-venue-section">
+        <%= simple_nested_form_for @account, 
+              url: { controller: "account_registrations", 
+              action: "update", 
+              protocol: (Rails.env == "development" ? "http" : "https"), 
+              only_path: false } do |account_form| %>
+          <p>
+            <%= account_form.link_to_add t("views.venues.add_more"), :venues,
+                  id: "btn-add-more-venue", 
+                  class: "btn btn-success" %>
+            <%= account_form.submit (@account.venues.exists? ? 
+                  t("general.save") : t("general.add_now")), 
+                  class: "btn btn-success" %>
+            <%= link_to t("general.cancel"), root_path, 
+                  class: "btn" %>  
+          </p>
+          <%= account_form.simple_fields_for :venues do |venue_form| %>
+            <ul class="row venue-list ta-left">
+              <li class="venue-form row">
+                <div class="col-md-4">
+                  <%= venue_form.text_field :name, 
+                        placeholder: t("views.venues.sign_up.venue_name"), 
+                        class: "form-control input-box" %>
+                  <%= venue_form.text_field :address, 
+                        placeholder: t("views.venues.sign_up.address"),
+                        class: "form-control input-box",
+                        onblur: "showBaiduMap(this);" %>
+                  <%= venue_form.link_to_remove t("views.venues.remove"), 
+                        class: "ta-center" %>                    
+                </div>
+                <div class="col-md-4">
+                  <%= venue_form.text_field :city, 
+                        placeholder: t("views.venues.sign_up.city"), 
+                        class: "form-control input-box city" %>
+                  <%= venue_form.hidden_field :latitude, 
+                        class: "lat" %>
+                  <%= venue_form.hidden_field :longitude, 
+                        class: "lng" %>
+                  <%= venue_form.text_field :phone_number, 
+                        placeholder: t("views.venues.sign_up.phone_number"), 
+                        class: "form-control input-box phone" %>        
+                  <%= venue_form.text_field :email, 
+                        placeholder: t("views.venues.sign_up.email"), 
+                        class: "form-control input-box" %>
+                </div>
+                <div class="col-md-4">
+                  <%= render 'venues/opening_period', venue_form: venue_form %>
+                </div>
+              </li>   
+            </ul>  
+          <% end %> 
+        <% end %>   
+      </div>
+
+      <%= render 'modal/map_baidu' %>  
+    </section>  
+  </div>
+</div>
